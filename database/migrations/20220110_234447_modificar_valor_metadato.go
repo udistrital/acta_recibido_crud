@@ -2,7 +2,7 @@ package main
 
 import (
 	"fmt"
-	"io/ioutil"
+	"os"
 	"strings"
 
 	"github.com/astaxie/beego/migration"
@@ -24,7 +24,7 @@ func init() {
 // Run the migrations
 func (m *ModificarValorMetadato_20220110_234447) Up() {
 
-	file, err := ioutil.ReadFile("../scripts/20220110_234447_modificar_valor_metadato_up.sql")
+	file, err := os.ReadFile("../scripts/20220110_234447_modificar_valor_metadato_up.sql")
 
 	if err != nil {
 		// handle error
@@ -42,7 +42,7 @@ func (m *ModificarValorMetadato_20220110_234447) Up() {
 // Reverse the migrations
 func (m *ModificarValorMetadato_20220110_234447) Down() {
 	// use m.SQL("DROP TABLE ...") to reverse schema update
-	file, err := ioutil.ReadFile("../scripts/20220110_234447_modificar_valor_metadato_down.sql")
+	file, err := os.ReadFile("../scripts/20220110_234447_modificar_valor_metadato_down.sql")
 
 	if err != nil {
 		// handle error
