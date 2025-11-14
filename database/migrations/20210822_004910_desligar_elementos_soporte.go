@@ -2,7 +2,7 @@ package main
 
 import (
 	"fmt"
-	"io/ioutil"
+	"os"
 	"strings"
 
 	"github.com/astaxie/beego/migration"
@@ -23,7 +23,7 @@ func init() {
 
 // Run the migrations
 func (m *DesligarElementosSoporte_20210822_004910) Up() {
-	file, err := ioutil.ReadFile("../scripts/20210822_004910_desligar_elementos_soporte_up.sql")
+	file, err := os.ReadFile("../scripts/20210822_004910_desligar_elementos_soporte_up.sql")
 
 	if err != nil {
 		// handle error
@@ -40,7 +40,7 @@ func (m *DesligarElementosSoporte_20210822_004910) Up() {
 
 // Reverse the migrations
 func (m *DesligarElementosSoporte_20210822_004910) Down() {
-	file, err := ioutil.ReadFile("../scripts/20210822_004910_desligar_elementos_soporte_down.sql")
+	file, err := os.ReadFile("../scripts/20210822_004910_desligar_elementos_soporte_down.sql")
 
 	if err != nil {
 		// handle error

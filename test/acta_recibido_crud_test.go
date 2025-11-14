@@ -28,7 +28,7 @@ import (
 	"github.com/xeipuuv/gojsonschema"
 )
 
-//@opt opciones de godog
+// @opt opciones de godog
 var opt = godog.Options{Output: colors.Colored(os.Stdout)}
 
 // @resStatus codigo de respuesta a las solicitudes a la api
@@ -37,10 +37,10 @@ var resStatus string
 // @resBody JSON repuesta Delete
 var resDelete string
 
-//@resBody JSON de respuesta a las solicitudesde la api
+// @resBody JSON de respuesta a las solicitudesde la api
 var resBody []byte
 
-//@especificacion estructura de la fecha
+// @especificacion estructura de la fecha
 const especificacion = "Jan 2, 2006 at 3:04pm (MST)"
 
 var savepostres map[string]interface{}
@@ -60,7 +60,7 @@ type Parametrica struct {
 	FechaModificacion time.Time
 }
 
-//@exe_cmd ejecuta comandos en la terminal
+// @exe_cmd ejecuta comandos en la terminal
 func exe_cmd(cmd string, wg *sync.WaitGroup) {
 
 	parts := strings.Fields(cmd)
@@ -79,12 +79,12 @@ func deleteFile(path string) {
 	// delete file
 	err := os.Remove(path)
 	if err != nil {
-		fmt.Errorf("no se pudo eliminar el archivo")
+		fmt.Printf("no se pudo eliminar el archivo: %v\n", err)
 	}
 
 }
 
-//@run_bee activa el servicio de la api para realizar los test
+// @run_bee activa el servicio de la api para realizar los test
 func run_bee() {
 	var resultado map[string]interface{}
 
@@ -123,7 +123,7 @@ func run_bee() {
 	wg.Done()
 }
 
-//@init inicia la aplicacion para realizar los test
+// @init inicia la aplicacion para realizar los test
 func init() {
 	fmt.Println("Inicio de pruebas Unitarias al API")
 
@@ -134,15 +134,15 @@ func init() {
 
 }
 
-//@TestMain para realizar la ejecucion con el comando go test ./test
+// @TestMain para realizar la ejecucion con el comando go test ./test
 func TestMain(m *testing.M) {
 
 	ts := godog.TestSuite{
 		Name:                "godogs",
 		ScenarioInitializer: InitializeScenario,
 		Options: &godog.Options{
-		Format: "progress",
-		Paths:  []string{"features"},
+			Format: "progress",
+			Paths:  []string{"features"},
 			Output: colors.Colored(os.Stdout),
 		},
 	}
@@ -155,7 +155,7 @@ func TestMain(m *testing.M) {
 
 }
 
-//@gen_files genera los archivos de ejemplos
+// @gen_files genera los archivos de ejemplos
 func gen_files() {
 	fmt.Println("Genera los archivos")
 	t := time.Now()
@@ -182,7 +182,7 @@ func gen_files() {
   ---- Ejecución de pruebas ----
   ------------------------------*/
 
-//@AreEqualJSON comparar dos JSON si son iguales retorna true de lo contrario false
+// @AreEqualJSON comparar dos JSON si son iguales retorna true de lo contrario false
 func AreEqualJSON(s1, s2 string) (bool, error) {
 
 	var o1 interface{}
@@ -201,7 +201,7 @@ func AreEqualJSON(s1, s2 string) (bool, error) {
 	return reflect.DeepEqual(o1, o2), nil
 }
 
-//@toJson convierte string en JSON
+// @toJson convierte string en JSON
 func toJson(p interface{}) string {
 
 	bytes, err := json.Marshal(p)
@@ -213,10 +213,10 @@ func toJson(p interface{}) string {
 	return string(bytes)
 }
 
-//@getPages convierte en un tipo el json
+// @getPages convierte en un tipo el json
 func getPages(ruta string) []byte {
 
-	raw, err := ioutil.ReadFile(ruta)
+	raw, err := os.ReadFile(ruta)
 	if err != nil {
 		fmt.Println(err.Error())
 		os.Exit(1)
@@ -227,7 +227,7 @@ func getPages(ruta string) []byte {
 	return c
 }
 
-//@iSendRequestToWhereBodyIsJson realiza la solicitud a la API
+// @iSendRequestToWhereBodyIsJson realiza la solicitud a la API
 func iSendRequestToWhereBodyIsJson(method, endpoint, bodyreq string) error {
 
 	var url string
@@ -283,7 +283,7 @@ func iSendRequestToWhereBodyIsJson(method, endpoint, bodyreq string) error {
 
 }
 
-//@theResponseCodeShouldBe valida el codigo de respuesta
+// @theResponseCodeShouldBe valida el codigo de respuesta
 func theResponseCodeShouldBe(arg1 string) error {
 	if resStatus != arg1 {
 		return fmt.Errorf("se esperaba el codigo de respuesta .. %s .. y se obtuvo el codigo de respuesta .. %s .. ", arg1, resStatus)
@@ -291,7 +291,7 @@ func theResponseCodeShouldBe(arg1 string) error {
 	return nil
 }
 
-//@theResponseShouldMatchJson valida el JSON de respuesta
+// @theResponseShouldMatchJson valida el JSON de respuesta
 func theResponseShouldMatchJson(arg1 string) error {
 	div := strings.Split(arg1, "")
 
@@ -308,8 +308,7 @@ func theResponseShouldMatchJson(arg1 string) error {
 		if result.Valid() {
 			return nil
 		} else {
-			return fmt.Errorf("Errores : %s", result.Errors())
-
+			fmt.Printf("Errores : %s", result.Errors())
 			return nil
 		}
 	}

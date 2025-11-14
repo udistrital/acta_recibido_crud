@@ -2,7 +2,7 @@ package main
 
 import (
 	"fmt"
-	"io/ioutil"
+	"os"
 	"strings"
 
 	"github.com/astaxie/beego/migration"
@@ -24,7 +24,7 @@ func init() {
 // Run the migrations
 func (m *PermitirSoportesNulos_20201222_231049) Up() {
 	// to make schema update
-	file, err := ioutil.ReadFile("../scripts/20201222_231049_permitir_soportes_nulos_up.sql")
+	file, err := os.ReadFile("../scripts/20201222_231049_permitir_soportes_nulos_up.sql")
 
 	if err != nil {
 		// handle error
@@ -43,8 +43,8 @@ func (m *PermitirSoportesNulos_20201222_231049) Up() {
 
 // Reverse the migrations
 func (m *PermitirSoportesNulos_20201222_231049) Down() {
-	// to reverse schema update	file, err := ioutil.ReadFile("../scripts/20201222_231049_permitir_soportes_nulos_down.sql")
-	file, err := ioutil.ReadFile("../scripts/20201222_231049_permitir_soportes_nulos_down.sql")
+	// to reverse schema update	file, err := os.ReadFile("../scripts/20201222_231049_permitir_soportes_nulos_down.sql")
+	file, err := os.ReadFile("../scripts/20201222_231049_permitir_soportes_nulos_down.sql")
 
 	if err != nil {
 		// handle error

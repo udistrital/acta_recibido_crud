@@ -11,7 +11,7 @@ import (
 	"github.com/udistrital/acta_recibido_crud/models"
 )
 
-//  CampoController operations for Campo
+// CampoController operations for Campo
 type CampoController struct {
 	beego.Controller
 }
