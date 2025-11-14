@@ -137,13 +137,16 @@ func init() {
 //@TestMain para realizar la ejecucion con el comando go test ./test
 func TestMain(m *testing.M) {
 
-	status := godog.RunWithOptions("godogs", func(s *godog.Suite) {
-		FeatureContext(s)
-	}, godog.Options{
+	ts := godog.TestSuite{
+		Name:                "godogs",
+		ScenarioInitializer: InitializeScenario,
+		Options: &godog.Options{
 		Format: "progress",
 		Paths:  []string{"features"},
-		//Randomize: time.Now().UTC().UnixNano(), // randomize scenario execution order
-	})
+			Output: colors.Colored(os.Stdout),
+		},
+	}
+	status := ts.Run()
 
 	if st := m.Run(); st > status {
 		status = st
@@ -386,9 +389,9 @@ func iSendRequestToWhereBodyIsMultipartformdataWithThisParamsAndTheFileLocatedAt
 	return nil
 }
 
-func FeatureContext(s *godog.Suite) {
-	s.Step(`^I send "([^"]*)" request to "([^"]*)" where body is multipart\/form-data with this params "([^"]*)" and the file "([^"]*)" located at "([^"]*)"$`, iSendRequestToWhereBodyIsMultipartformdataWithThisParamsAndTheFileLocatedAt)
-	s.Step(`^I send "([^"]*)" request to "([^"]*)" where body is json "([^"]*)"$`, iSendRequestToWhereBodyIsJson)
-	s.Step(`^the response code should be "([^"]*)"$`, theResponseCodeShouldBe)
-	s.Step(`^the response should match json "([^"]*)"$`, theResponseShouldMatchJson)
+func InitializeScenario(ctx *godog.ScenarioContext) {
+	ctx.Step(`^I send "([^"]*)" request to "([^"]*)" where body is multipart\/form-data with this params "([^"]*)" and the file "([^"]*)" located at "([^"]*)"$`, iSendRequestToWhereBodyIsMultipartformdataWithThisParamsAndTheFileLocatedAt)
+	ctx.Step(`^I send "([^"]*)" request to "([^"]*)" where body is json "([^"]*)"$`, iSendRequestToWhereBodyIsJson)
+	ctx.Step(`^the response code should be "([^"]*)"$`, theResponseCodeShouldBe)
+	ctx.Step(`^the response should match json "([^"]*)"$`, theResponseShouldMatchJson)
 }
