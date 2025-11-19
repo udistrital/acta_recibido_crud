@@ -2,7 +2,7 @@ package main
 
 import (
 	"fmt"
-	"io/ioutil"
+	"os"
 	"strings"
 
 	"github.com/astaxie/beego/migration"
@@ -24,7 +24,7 @@ func init() {
 // Run the migrations
 func (m *PermiteGuardadoTemporal_20201229_125940) Up() {
 	// to make schema update
-	file, err := ioutil.ReadFile("../scripts/20201229_125940_permite_guardado_temporal_up.sql")
+	file, err := os.ReadFile("../scripts/20201229_125940_permite_guardado_temporal_up.sql")
 
 	if err != nil {
 		// handle error
@@ -43,7 +43,7 @@ func (m *PermiteGuardadoTemporal_20201229_125940) Up() {
 // Reverse the migrations
 func (m *PermiteGuardadoTemporal_20201229_125940) Down() {
 	// to make schema update
-	file, err := ioutil.ReadFile("../scripts/20201229_125940_permite_guardado_temporal_down.sql")
+	file, err := os.ReadFile("../scripts/20201229_125940_permite_guardado_temporal_down.sql")
 
 	if err != nil {
 		// handle error

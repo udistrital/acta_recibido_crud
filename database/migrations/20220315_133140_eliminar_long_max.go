@@ -2,7 +2,7 @@ package main
 
 import (
 	"fmt"
-	"io/ioutil"
+	"os"
 	"strings"
 
 	"github.com/astaxie/beego/migration"
@@ -23,7 +23,7 @@ func init() {
 
 // Run the migrations
 func (m *EliminarLongMax_20220315_133140) Up() {
-	file, err := ioutil.ReadFile("../scripts/20220315_133140_eliminar_long_max_up.sql")
+	file, err := os.ReadFile("../scripts/20220315_133140_eliminar_long_max_up.sql")
 
 	if err != nil {
 		// handle error
@@ -40,7 +40,7 @@ func (m *EliminarLongMax_20220315_133140) Up() {
 
 // Reverse the migrations
 func (m *EliminarLongMax_20220315_133140) Down() {
-	file, err := ioutil.ReadFile("../scripts/20220315_133140_eliminar_long_max_down.sql")
+	file, err := os.ReadFile("../scripts/20220315_133140_eliminar_long_max_down.sql")
 
 	if err != nil {
 		// handle error

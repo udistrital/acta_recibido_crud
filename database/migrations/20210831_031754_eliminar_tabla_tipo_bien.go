@@ -2,7 +2,7 @@ package main
 
 import (
 	"fmt"
-	"io/ioutil"
+	"os"
 	"strings"
 
 	"github.com/astaxie/beego/migration"
@@ -23,7 +23,7 @@ func init() {
 
 // Run the migrations
 func (m *EliminarTablaTipoBien_20210831_031754) Up() {
-	file, err := ioutil.ReadFile("../scripts/20210831_031754_eliminar_tabla_tipo_bien_up.sql")
+	file, err := os.ReadFile("../scripts/20210831_031754_eliminar_tabla_tipo_bien_up.sql")
 
 	if err != nil {
 		// handle error
@@ -41,7 +41,7 @@ func (m *EliminarTablaTipoBien_20210831_031754) Up() {
 
 // Reverse the migrations
 func (m *EliminarTablaTipoBien_20210831_031754) Down() {
-	file, err := ioutil.ReadFile("../scripts/20210831_031754_eliminar_tabla_tipo_bien_down.sql")
+	file, err := os.ReadFile("../scripts/20210831_031754_eliminar_tabla_tipo_bien_down.sql")
 
 	if err != nil {
 		// handle error

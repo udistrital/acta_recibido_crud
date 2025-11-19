@@ -1,9 +1,8 @@
 package main
 
 import (
-
 	"fmt"
-	"io/ioutil"
+	"os"
 	"strings"
 
 	"github.com/astaxie/beego/migration"
@@ -25,7 +24,7 @@ func init() {
 // Run the migrations
 func (m *InsertarParametricasActaRecibido_20190723_112914) Up() {
 	// use m.SQL("CREATE TABLE ...") to make schema update
-	file, err := ioutil.ReadFile("../scripts/20190723_112914_insertar_parametricas_up.sql")
+	file, err := os.ReadFile("../scripts/20190723_112914_insertar_parametricas_up.sql")
 
 	if err != nil {
 		// handle error
@@ -45,7 +44,7 @@ func (m *InsertarParametricasActaRecibido_20190723_112914) Up() {
 // Reverse the migrations
 func (m *InsertarParametricasActaRecibido_20190723_112914) Down() {
 	// use m.SQL("DROP TABLE ...") to reverse schema update
-	file, err := ioutil.ReadFile("../scripts/20190723_112914_insertar_parametricas_down.sql")
+	file, err := os.ReadFile("../scripts/20190723_112914_insertar_parametricas_down.sql")
 
 	if err != nil {
 		// handle error

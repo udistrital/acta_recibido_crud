@@ -2,7 +2,7 @@ package main
 
 import (
 	"fmt"
-	"io/ioutil"
+	"os"
 	"strings"
 
 	"github.com/astaxie/beego/migration"
@@ -23,7 +23,7 @@ func init() {
 
 // Run the migrations
 func (m *TipoBienManual_20221014_124608) Up() {
-	file, err := ioutil.ReadFile("../scripts/20221014_124608_tipo_bien_manual_up.sql")
+	file, err := os.ReadFile("../scripts/20221014_124608_tipo_bien_manual_up.sql")
 
 	if err != nil {
 		// handle error
@@ -40,7 +40,7 @@ func (m *TipoBienManual_20221014_124608) Up() {
 
 // Reverse the migrations
 func (m *TipoBienManual_20221014_124608) Down() {
-	file, err := ioutil.ReadFile("../scripts/20221014_124608_tipo_bien_manual_down.sql")
+	file, err := os.ReadFile("../scripts/20221014_124608_tipo_bien_manual_down.sql")
 
 	if err != nil {
 		// handle error

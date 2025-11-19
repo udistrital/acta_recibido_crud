@@ -9,7 +9,6 @@ main
 
 # Variables de Entorno
 *.env
-!.env
 
 # IDEs y otros
 .vscode
