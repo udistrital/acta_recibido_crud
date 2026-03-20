@@ -1,6 +1,8 @@
 package models
 
 import (
+	"time"
+
 	"github.com/astaxie/beego/logs"
 	"github.com/astaxie/beego/orm"
 )
@@ -77,6 +79,10 @@ func AddTransaccionActaRecibido(m *TransaccionActaRecibido) (err error) {
 		m.UltimoEstado == nil || m.UltimoEstado.EstadoActaId.Id <= 0 {
 		return
 	}
+
+	now := time.Now()
+	m.ActaRecibido.FechaCreacion = now
+	m.ActaRecibido.FechaModificacion = now
 
 	idActa, err := o.Insert(m.ActaRecibido)
 	if err != nil {
