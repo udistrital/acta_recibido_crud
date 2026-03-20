@@ -14,7 +14,6 @@ type TransaccionActaRecibido struct {
 	Elementos    []*Elemento
 }
 
-// GetTransaccionActaRecibido Obtener transacción con la información de un Acta de Recibido
 func GetTransaccionActaRecibido(id int, getElementos bool) (v TransaccionActaRecibido, err error) {
 	o := orm.NewOrm()
 
@@ -53,7 +52,6 @@ func GetTransaccionActaRecibido(id int, getElementos bool) (v TransaccionActaRec
 	return
 }
 
-// AddTransaccionActaRecibido Registrar transacción con toda la información del Acta de Recibido
 func AddTransaccionActaRecibido(m *TransaccionActaRecibido) (err error) {
 
 	o := orm.NewOrm()
@@ -81,9 +79,9 @@ func AddTransaccionActaRecibido(m *TransaccionActaRecibido) (err error) {
 	}
 
 	now := time.Now()
+
 	m.ActaRecibido.FechaCreacion = now
 	m.ActaRecibido.FechaModificacion = now
-
 	idActa, err := o.Insert(m.ActaRecibido)
 	if err != nil {
 		return err
@@ -91,6 +89,8 @@ func AddTransaccionActaRecibido(m *TransaccionActaRecibido) (err error) {
 
 	m.UltimoEstado.ActaRecibidoId = &ActaRecibido{Id: int(idActa)}
 	m.UltimoEstado.Activo = true
+	m.UltimoEstado.FechaCreacion = now
+	m.UltimoEstado.FechaModificacion = now
 	_, err = o.Insert(m.UltimoEstado)
 	if err != nil {
 		return
@@ -98,6 +98,8 @@ func AddTransaccionActaRecibido(m *TransaccionActaRecibido) (err error) {
 
 	for _, v := range m.SoportesActa {
 		v.ActaRecibidoId = &ActaRecibido{Id: int(idActa)}
+		v.FechaCreacion = now
+		v.FechaModificacion = now
 		_, err = o.Insert(v)
 		if err != nil {
 			return
@@ -106,6 +108,8 @@ func AddTransaccionActaRecibido(m *TransaccionActaRecibido) (err error) {
 
 	for _, w := range m.Elementos {
 		w.ActaRecibidoId = &ActaRecibido{Id: int(idActa)}
+		w.FechaCreacion = now
+		w.FechaModificacion = now
 		_, err = o.Insert(w)
 		if err != nil {
 			return
@@ -115,7 +119,6 @@ func AddTransaccionActaRecibido(m *TransaccionActaRecibido) (err error) {
 	return
 }
 
-// UpdateTransaccionActaRecibido Actualiza información de un Acta de recibido
 func UpdateTransaccionActaRecibido(m *TransaccionActaRecibido) (err error) {
 	o := orm.NewOrm()
 
@@ -157,7 +160,11 @@ func UpdateTransaccionActaRecibido(m *TransaccionActaRecibido) (err error) {
 		return
 	}
 
+	now := time.Now()
+
 	m.UltimoEstado.Activo = true
+	m.UltimoEstado.FechaCreacion = now
+	m.UltimoEstado.FechaModificacion = now
 	_, err = o.Insert(m.UltimoEstado)
 	if err != nil {
 		return
@@ -170,9 +177,7 @@ func UpdateTransaccionActaRecibido(m *TransaccionActaRecibido) (err error) {
 	}
 
 	for _, soporte := range m.SoportesActa {
-
 		if soporte.Id > 0 {
-
 			if i := findIdInArray(listSoportes, soporte.Id); i > -1 {
 				listSoportes = append(listSoportes[:i], listSoportes[i+1:]...)
 				_, err = o.Update(soporte)
@@ -182,12 +187,13 @@ func UpdateTransaccionActaRecibido(m *TransaccionActaRecibido) (err error) {
 			}
 		} else {
 			soporte.ActaRecibidoId = &ActaRecibido{Id: m.ActaRecibido.Id}
+			soporte.FechaCreacion = now
+			soporte.FechaModificacion = now
 			_, err = o.Insert(soporte)
 			if err != nil {
 				return
 			}
 		}
-
 	}
 
 	for _, id := range listSoportes {
@@ -207,7 +213,6 @@ func UpdateTransaccionActaRecibido(m *TransaccionActaRecibido) (err error) {
 
 	for _, elemento := range m.Elementos {
 		if elemento.Id > 0 {
-
 			if i := findIdInArray(listElementos, elemento.Id); i > -1 {
 				listElementos = append(listElementos[:i], listElementos[i+1:]...)
 				_, err = o.Update(elemento)
@@ -217,6 +222,8 @@ func UpdateTransaccionActaRecibido(m *TransaccionActaRecibido) (err error) {
 			}
 		} else {
 			elemento.ActaRecibidoId = &ActaRecibido{Id: m.ActaRecibido.Id}
+			elemento.FechaCreacion = now
+			elemento.FechaModificacion = now
 			_, err = o.Insert(elemento)
 			if err != nil {
 				return
@@ -236,7 +243,6 @@ func UpdateTransaccionActaRecibido(m *TransaccionActaRecibido) (err error) {
 	return
 }
 
-// findIdInArray Retorna la posicion en que se encuentra el id específicado
 func findIdInArray(idsList orm.ParamsList, id int) (i int) {
 	for i, id_ := range idsList {
 		if id_ == int64(id) {
