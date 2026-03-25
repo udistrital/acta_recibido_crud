@@ -181,8 +181,14 @@ func UpdateTransaccionActaRecibido(m *TransaccionActaRecibido) (err error) {
 		if soporte.Id > 0 {
 			if i := findIdInArray(listSoportes, soporte.Id); i > -1 {
 				listSoportes = append(listSoportes[:i], listSoportes[i+1:]...)
+				existing := SoporteActa{Id: soporte.Id}
+				err = o.Read(&existing)
+				if err != nil {
+					return
+				}
+				soporte.FechaCreacion = existing.FechaCreacion
 				soporte.FechaModificacion = now
-				_, err = o.Update(soporte, "Consecutivo", "DocumentoId", "FechaSoporte", "Activo", "FechaModificacion")
+				_, err = o.Update(soporte)
 				if err != nil {
 					return
 				}
@@ -217,11 +223,14 @@ func UpdateTransaccionActaRecibido(m *TransaccionActaRecibido) (err error) {
 		if elemento.Id > 0 {
 			if i := findIdInArray(listElementos, elemento.Id); i > -1 {
 				listElementos = append(listElementos[:i], listElementos[i+1:]...)
+				existing := Elemento{Id: elemento.Id}
+				err = o.Read(&existing)
+				if err != nil {
+					return
+				}
+				elemento.FechaCreacion = existing.FechaCreacion
 				elemento.FechaModificacion = now
-				_, err = o.Update(elemento, "Nombre", "Cantidad", "Marca", "Serie", "UnidadMedida",
-					"ValorUnitario", "Subtotal", "Descuento", "ValorTotal", "PorcentajeIvaId",
-					"ValorIva", "ValorFinal", "SubgrupoCatalogoId", "EstadoElementoId",
-					"EspacioFisicoId", "Placa", "TipoBienId", "Activo", "FechaModificacion")
+				_, err = o.Update(elemento)
 				if err != nil {
 					return
 				}
