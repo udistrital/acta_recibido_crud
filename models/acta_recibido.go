@@ -15,8 +15,8 @@ type ActaRecibido struct {
 	TipoActaId        *TipoActa `orm:"column(tipo_acta_id);rel(fk)"`
 	UnidadEjecutoraId int       `orm:"column(unidad_ejecutora_id)"`
 	Activo            bool      `orm:"column(activo)"`
-	FechaCreacion     time.Time `orm:"auto_now_add;column(fecha_creacion);type(timestamp without time zone)"`
-	FechaModificacion time.Time `orm:"auto_now;column(fecha_modificacion);type(timestamp without time zone)"`
+	FechaCreacion     time.Time `orm:"column(fecha_creacion);type(timestamp without time zone)"`
+	FechaModificacion time.Time `orm:"column(fecha_modificacion);type(timestamp without time zone)"`
 }
 
 func (t *ActaRecibido) TableName() string {
