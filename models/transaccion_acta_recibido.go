@@ -162,6 +162,7 @@ func UpdateTransaccionActaRecibido(m *TransaccionActaRecibido) (err error) {
 
 	now := time.Now()
 
+	m.UltimoEstado.ActaRecibidoId = &ActaRecibido{Id: m.ActaRecibido.Id}
 	m.UltimoEstado.Activo = true
 	m.UltimoEstado.FechaCreacion = now
 	m.UltimoEstado.FechaModificacion = now
@@ -180,7 +181,8 @@ func UpdateTransaccionActaRecibido(m *TransaccionActaRecibido) (err error) {
 		if soporte.Id > 0 {
 			if i := findIdInArray(listSoportes, soporte.Id); i > -1 {
 				listSoportes = append(listSoportes[:i], listSoportes[i+1:]...)
-				_, err = o.Update(soporte)
+				soporte.FechaModificacion = now
+				_, err = o.Update(soporte, "Consecutivo", "DocumentoId", "FechaSoporte", "Activo", "FechaModificacion")
 				if err != nil {
 					return
 				}
@@ -199,7 +201,7 @@ func UpdateTransaccionActaRecibido(m *TransaccionActaRecibido) (err error) {
 	for _, id := range listSoportes {
 		id_, _ := id.(int64)
 		soporteInactivo := SoporteActa{Id: int(id_), Activo: false}
-		_, err = o.Update(soporteInactivo, "Activo")
+		_, err = o.Update(&soporteInactivo, "Activo")
 		if err != nil {
 			return
 		}
@@ -215,7 +217,11 @@ func UpdateTransaccionActaRecibido(m *TransaccionActaRecibido) (err error) {
 		if elemento.Id > 0 {
 			if i := findIdInArray(listElementos, elemento.Id); i > -1 {
 				listElementos = append(listElementos[:i], listElementos[i+1:]...)
-				_, err = o.Update(elemento)
+				elemento.FechaModificacion = now
+				_, err = o.Update(elemento, "Nombre", "Cantidad", "Marca", "Serie", "UnidadMedida",
+					"ValorUnitario", "Subtotal", "Descuento", "ValorTotal", "PorcentajeIvaId",
+					"ValorIva", "ValorFinal", "SubgrupoCatalogoId", "EstadoElementoId",
+					"EspacioFisicoId", "Placa", "TipoBienId", "Activo", "FechaModificacion")
 				if err != nil {
 					return
 				}
@@ -234,7 +240,7 @@ func UpdateTransaccionActaRecibido(m *TransaccionActaRecibido) (err error) {
 	for _, id := range listElementos {
 		id_, _ := id.(int64)
 		elementoInactivo := Elemento{Id: int(id_), Activo: false}
-		_, err = o.Update(elementoInactivo, "Activo")
+		_, err = o.Update(&elementoInactivo, "Activo")
 		if err != nil {
 			return
 		}
