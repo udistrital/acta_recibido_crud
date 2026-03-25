@@ -162,6 +162,7 @@ func UpdateTransaccionActaRecibido(m *TransaccionActaRecibido) (err error) {
 
 	now := time.Now()
 
+	m.UltimoEstado.ActaRecibidoId = &ActaRecibido{Id: m.ActaRecibido.Id}
 	m.UltimoEstado.Activo = true
 	m.UltimoEstado.FechaCreacion = now
 	m.UltimoEstado.FechaModificacion = now
@@ -180,6 +181,13 @@ func UpdateTransaccionActaRecibido(m *TransaccionActaRecibido) (err error) {
 		if soporte.Id > 0 {
 			if i := findIdInArray(listSoportes, soporte.Id); i > -1 {
 				listSoportes = append(listSoportes[:i], listSoportes[i+1:]...)
+				existing := SoporteActa{Id: soporte.Id}
+				err = o.Read(&existing)
+				if err != nil {
+					return
+				}
+				soporte.FechaCreacion = existing.FechaCreacion
+				soporte.FechaModificacion = now
 				_, err = o.Update(soporte)
 				if err != nil {
 					return
@@ -199,7 +207,7 @@ func UpdateTransaccionActaRecibido(m *TransaccionActaRecibido) (err error) {
 	for _, id := range listSoportes {
 		id_, _ := id.(int64)
 		soporteInactivo := SoporteActa{Id: int(id_), Activo: false}
-		_, err = o.Update(soporteInactivo, "Activo")
+		_, err = o.Update(&soporteInactivo, "Activo")
 		if err != nil {
 			return
 		}
@@ -215,6 +223,13 @@ func UpdateTransaccionActaRecibido(m *TransaccionActaRecibido) (err error) {
 		if elemento.Id > 0 {
 			if i := findIdInArray(listElementos, elemento.Id); i > -1 {
 				listElementos = append(listElementos[:i], listElementos[i+1:]...)
+				existing := Elemento{Id: elemento.Id}
+				err = o.Read(&existing)
+				if err != nil {
+					return
+				}
+				elemento.FechaCreacion = existing.FechaCreacion
+				elemento.FechaModificacion = now
 				_, err = o.Update(elemento)
 				if err != nil {
 					return
@@ -234,7 +249,7 @@ func UpdateTransaccionActaRecibido(m *TransaccionActaRecibido) (err error) {
 	for _, id := range listElementos {
 		id_, _ := id.(int64)
 		elementoInactivo := Elemento{Id: int(id_), Activo: false}
-		_, err = o.Update(elementoInactivo, "Activo")
+		_, err = o.Update(&elementoInactivo, "Activo")
 		if err != nil {
 			return
 		}
